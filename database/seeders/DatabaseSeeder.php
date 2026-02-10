@@ -2,24 +2,28 @@
 
 namespace Database\Seeders;
 
+use App\Models\Contact;
+use App\Models\Interaction;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::updateOrCreate(
+            ['email' => 'agent@example.com'],
+            ['name' => 'Demo Agent', 'password' => Hash::make('password')]
+        );
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        Contact::factory()
+            ->count(25)
+            ->create()
+            ->each(function (Contact $contact) {
+                Interaction::factory()
+                    ->count(rand(1, 6))
+                    ->create(['contact_id' => $contact->id]);
+            });
     }
 }
