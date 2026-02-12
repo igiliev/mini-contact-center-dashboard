@@ -3,6 +3,7 @@ import { useAppSelector } from "../app/hooks";
 import LoginPage from "../pages/LoginPage";
 import ContactsPage from "../pages/ContactsPage";
 import ContactDetailsPage from "../pages/ContactDetailsPage";
+import type { JSX } from "react";
 
 function RequireAuth({ children }: { children: JSX.Element }) {
   const token = useAppSelector((s) => s.auth.token);

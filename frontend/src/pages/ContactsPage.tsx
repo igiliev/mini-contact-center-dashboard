@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { loadContacts, setPage, setSearch } from "../features/contacts/contactsSlice";
+import { logout } from "../features/auth/authSlice";
+import { addContact } from "../features/contacts/contactsSlice";
 
 export default function ContactsPage() {
   const dispatch = useAppDispatch();
   const { list, loadingList, error, search, page } = useAppSelector((s) => s.contacts);
+  // const token = useAppSelector((s) => s.auth.token);
 
   const [localSearch, setLocalSearch] = useState(search);
 
@@ -17,9 +20,32 @@ export default function ContactsPage() {
     dispatch(setSearch(localSearch));
   }
 
+  async function onLogout() {
+  await dispatch(logout());
+}
+
+async function quickAdd() {
+  // temporary quick add (we'll replace with a proper form modal next)
+  const random = Math.floor(Math.random() * 100000);
+  await dispatch(
+    addContact({
+      name: `New Contact ${random}`,
+      email: `new${random}@example.com`,
+      phone: null,
+      company: null,
+    })
+  );
+  dispatch(loadContacts());
+}
+
   return (
     <div style={{ maxWidth: 1000, margin: "40px auto", fontFamily: "system-ui" }}>
       <h2>Contacts</h2>
+
+      <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+        <button onClick={quickAdd}>+ Add Contact</button>
+        <button onClick={onLogout}>Logout</button>
+      </div>
 
       <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
         <input
