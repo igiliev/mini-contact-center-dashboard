@@ -2,6 +2,18 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { editContact, loadContact, removeContact } from "../features/contacts/contactsSlice";
+import styles from "./ContactDetailsPage.module.scss";
+import {
+  IconBack,
+  IconMail,
+  IconPhone,
+  IconBuilding,
+  IconPencil,
+  IconSave,
+  IconX,
+  IconTrash,
+} from "../ui/icons";
+
 
 type FormState = {
   name: string;
@@ -10,46 +22,67 @@ type FormState = {
   company: string;
 };
 
+function initials(name: string) {
+  const parts = name.trim().split(/\s+/).slice(0, 2);
+  return parts.map((p) => p[0]?.toUpperCase()).join("") || "?";
+}
+
 function ContactEditForm({
   initial,
   onSave,
-  onDelete,
+  onCancel,
 }: {
-  contactId: number;
   initial: FormState;
   onSave: (payload: { name: string; email: string; phone: string | null; company: string | null }) => void;
-  onDelete: () => void;
+  onCancel: () => void;
 }) {
   const [form, setForm] = useState<FormState>(initial);
 
   return (
-    <div style={{ display: "grid", gap: 10, maxWidth: 400 }}>
-      <input
-        value={form.name}
-        placeholder="Name"
-        onChange={(e) => setForm({ ...form, name: e.target.value })}
-      />
+    <div className={styles.formGrid}>
+      <div className={styles.field}>
+        <div className={styles.label}>Full Name</div>
+        <input
+          className={styles.input}
+          value={form.name}
+          placeholder="Enter full name"
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
+        />
+      </div>
 
-      <input
-        value={form.email}
-        placeholder="Email"
-        onChange={(e) => setForm({ ...form, email: e.target.value })}
-      />
+      <div className={styles.field}>
+        <div className={styles.label}>Email Address</div>
+        <input
+          className={styles.input}
+          value={form.email}
+          placeholder="Enter email address"
+          onChange={(e) => setForm({ ...form, email: e.target.value })}
+        />
+      </div>
 
-      <input
-        value={form.phone}
-        placeholder="Phone"
-        onChange={(e) => setForm({ ...form, phone: e.target.value })}
-      />
+      <div className={styles.field}>
+        <div className={styles.label}>Phone Number</div>
+        <input
+          className={styles.input}
+          value={form.phone}
+          placeholder="Enter phone number"
+          onChange={(e) => setForm({ ...form, phone: e.target.value })}
+        />
+      </div>
 
-      <input
-        value={form.company}
-        placeholder="Company"
-        onChange={(e) => setForm({ ...form, company: e.target.value })}
-      />
+      <div className={styles.field}>
+        <div className={styles.label}>Company</div>
+        <input
+          className={styles.input}
+          value={form.company}
+          placeholder="Enter company name"
+          onChange={(e) => setForm({ ...form, company: e.target.value })}
+        />
+      </div>
 
-      <div style={{ display: "flex", gap: 10 }}>
+      <div className={styles.actions}>
         <button
+          className={styles.primaryBtn}
           onClick={() =>
             onSave({
               name: form.name,
@@ -59,11 +92,15 @@ function ContactEditForm({
             })
           }
         >
-          Save
+          {/* save icon */}
+          <IconSave width={16} height={16} />
+          Save Changes
         </button>
 
-        <button onClick={onDelete} style={{ background: "crimson", color: "white" }}>
-          Delete
+        <button className={styles.secondaryBtn} onClick={onCancel}>
+          {/* x icon */}
+          <IconX width={16} height={16} />
+          Cancel
         </button>
       </div>
     </div>
@@ -77,7 +114,6 @@ export default function ContactDetailsPage() {
 
   const { selected, loadingSelected, error } = useAppSelector((s) => s.contacts);
 
-  // Load contact
   useEffect(() => {
     if (id) dispatch(loadContact(Number(id)));
   }, [dispatch, id]);
@@ -89,27 +125,25 @@ export default function ContactDetailsPage() {
       phone: selected?.phone ?? "",
       company: selected?.company ?? "",
     };
-  }, [selected?.id]); // reset only when switching contacts
+  }, [selected?.id]);
 
   async function onSave(payload: { name: string; email: string; phone: string | null; company: string | null }) {
     if (!selected) return;
 
-    const res = await dispatch(
-      editContact({
-        id: selected.id,
-        payload,
-      })
-    );
-
+    const res = await dispatch(editContact({ id: selected.id, payload }));
     if (editContact.fulfilled.match(res)) {
       dispatch(loadContact(selected.id));
       alert("Saved!");
     }
   }
 
+  function onCancel() {
+    // simple: go back (matches screenshot "Cancel" intent)
+    nav("/");
+  }
+
   async function onDelete() {
     if (!selected) return;
-
     const ok = confirm(`Delete ${selected.name}?`);
     if (!ok) return;
 
@@ -117,46 +151,119 @@ export default function ContactDetailsPage() {
     if (removeContact.fulfilled.match(res)) nav("/");
   }
 
-  return (
-    <div style={{ maxWidth: 900, margin: "40px auto", fontFamily: "system-ui" }}>
-      <Link to="/">← Back</Link>
+  if (loadingSelected) {
+    return <div className={styles.page}>Loading...</div>;
+  }
 
-      {loadingSelected && <div>Loading...</div>}
-      {error && <div style={{ color: "crimson" }}>{error}</div>}
+  return (
+    <div className={styles.page}>
+      <Link to="/" className={styles.backRow}>
+        {/* back arrow */}
+        <IconBack width={18} height={18} />
+        Back
+      </Link>
+
+      {error && <div style={{ color: "crimson", marginBottom: 12 }}>{error}</div>}
 
       {selected && (
         <>
-          <h2 style={{ marginTop: 20 }}>{selected.name}</h2>
+          <div className={styles.header}>
+            <div className={styles.avatar}>{initials(selected.name)}</div>
+            <div className={styles.titleBlock}>
+              <h1 className={styles.name}>{selected.name}</h1>
+              <p className={styles.subtitle}>Contact Information</p>
+            </div>
+          </div>
 
-          <div>Email: {selected.email}</div>
-          <div>Phone: {selected.phone ?? "-"}</div>
-          <div>Company: {selected.company ?? "-"}</div>
+          <div className={styles.infoGrid}>
+            <div className={styles.infoCard}>
+              <div className={`${styles.infoIcon} ${styles.iconEmail}`} aria-hidden>
+                {/* mail */}
+                <IconMail height={18} width={18} />
+              </div>
+              <div>
+                <p className={styles.infoLabel}>Email</p>
+                <p className={styles.infoValue}>{selected.email}</p>
+              </div>
+            </div>
 
-          <h3 style={{ marginTop: 30 }}>Edit Contact</h3>
+            <div className={styles.infoCard}>
+              <div className={`${styles.infoIcon} ${styles.iconPhone}`} aria-hidden>
+                {/* phone */}
+                <IconPhone width={18} height={18} />
+              </div>
+              <div>
+                <p className={styles.infoLabel}>Phone</p>
+                <p className={styles.infoValue}>{selected.phone ?? <span className={styles.mutedValue}>Not provided</span>}</p>
+              </div>
+            </div>
 
-          {/* key forces remount when selected.id changes, resetting internal form state */}
-          <ContactEditForm
-            key={selected.id}
-            contactId={selected.id}
-            initial={initialForm}
-            onSave={onSave}
-            onDelete={onDelete}
-          />
+            <div className={styles.infoCard}>
+              <div className={`${styles.infoIcon} ${styles.iconCompany}`} aria-hidden>
+                {/* building */}
+                <IconBuilding width={18} height={18} />
+              </div>
+              <div>
+                <p className={styles.infoLabel}>Company</p>
+                <p className={styles.infoValue}>
+                  {selected.company ?? <span className={styles.mutedValue}>Not provided</span>}
+                </p>
+              </div>
+            </div>
+          </div>
 
-          <h3 style={{ marginTop: 40 }}>Recent interactions</h3>
+          <div className={styles.card}>
+            <div className={styles.cardTitleRow}>
+              <div className={styles.cardTitleIcon} aria-hidden>
+                {/* pencil */}
+                <IconPencil width={18} height={18} />
+              </div>
+              <h3 className={styles.cardTitle}>Edit Contact</h3>
+            </div>
 
-          {selected.interactions?.length ? (
-            <ul>
-              {selected.interactions.map((i) => (
-                <li key={i.id} style={{ marginBottom: 10 }}>
-                  <strong>{i.type}</strong> — {new Date(i.timestamp).toLocaleString()}
-                  {i.note ? <div>{i.note}</div> : null}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <div>No interactions.</div>
-          )}
+            <ContactEditForm
+              key={selected.id}
+              initial={initialForm}
+              onSave={onSave}
+              onCancel={onCancel}
+            />
+          </div>
+
+          <div className={`${styles.card} ${styles.sectionSpacing}`}>
+            <h3 className={styles.cardTitle} style={{ marginBottom: 0 }}>
+              Recent Interactions
+            </h3>
+
+            {selected.interactions?.length ? (
+              <ul style={{ marginTop: 14 }}>
+                {selected.interactions.map((i) => (
+                  <li key={i.id} style={{ marginBottom: 10 }}>
+                    <strong>{i.type}</strong> — {new Date(i.timestamp).toLocaleString()}
+                    {i.note ? <div>{i.note}</div> : null}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className={styles.emptyState}>
+                <div>
+                  <div className={styles.emptyIcon} aria-hidden>
+                    {/* mail icon */}
+                    <IconMail width={22} height={22} />
+                  </div>
+                  <p className={styles.emptyTitle}>No interactions yet</p>
+                  <p className={styles.emptySub}>Contact activity will appear here</p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className={styles.deleteWrap}>
+            <button className={styles.deleteBtn} onClick={onDelete}>
+              {/* trash */}
+              <IconTrash width={18} height={18} />
+              Delete Contact
+            </button>
+          </div>
         </>
       )}
     </div>

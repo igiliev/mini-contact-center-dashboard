@@ -1,0 +1,281 @@
+.page {
+  max-width: 1040px;
+  margin: 44px auto;
+  padding: 0 18px 60px;
+}
+
+.backRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #0b7285;
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 22px;
+  color: #fff;
+  background: linear-gradient(135deg, #fb7185, #f97316);
+  box-shadow: 0 14px 30px rgba(2, 8, 23, 0.12);
+}
+
+.titleBlock {
+  display: grid;
+  gap: 4px;
+}
+
+.name {
+  margin: 0;
+  font-size: 34px;
+  letter-spacing: -0.03em;
+  color: #0f172a;
+}
+
+.subtitle {
+  margin: 0;
+  color: rgba(15, 23, 42, 0.55);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* --- info cards --- */
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 18px 0 22px;
+}
+
+@media (max-width: 840px) {
+  .infoGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.infoCard {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  padding: 18px 18px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.infoIcon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+}
+
+.iconEmail {
+  background: rgba(6, 182, 212, 0.12);
+  color: rgba(6, 182, 212, 1);
+}
+
+.iconPhone {
+  background: rgba(20, 184, 166, 0.12);
+  color: rgba(20, 184, 166, 1);
+}
+
+.iconCompany {
+  background: rgba(249, 115, 22, 0.12);
+  color: rgba(249, 115, 22, 1);
+}
+
+.infoLabel {
+  font-size: 12px;
+  font-weight: 800;
+  color: rgba(15, 23, 42, 0.7);
+  margin: 0 0 6px;
+}
+
+.infoValue {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(15, 23, 42, 0.9);
+}
+
+.mutedValue {
+  color: rgba(15, 23, 42, 0.45);
+  font-weight: 700;
+}
+
+/* --- cards --- */
+.card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  padding: 22px;
+}
+
+.cardTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.cardTitleIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: rgba(6, 182, 212, 0.12);
+  display: grid;
+  place-items: center;
+  color: rgba(6, 182, 212, 1);
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+}
+
+/* --- form --- */
+.formGrid {
+  display: grid;
+  gap: 14px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 800;
+  color: rgba(15, 23, 42, 0.75);
+}
+
+.input {
+  width: 100%;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: #fbfdff;
+  border-radius: 12px;
+  padding: 12px 14px;
+  outline: none;
+  transition: box-shadow 150ms ease, border-color 150ms ease;
+}
+
+.input:focus {
+  border-color: rgba(6, 182, 212, 0.45);
+  box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.10);
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 160px;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+@media (max-width: 520px) {
+  .actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+.primaryBtn {
+  border: none;
+  cursor: pointer;
+  padding: 12px 16px;
+  border-radius: 12px;
+  color: #fff;
+  font-weight: 800;
+  background: linear-gradient(90deg, var(--teal-1), var(--teal-2));
+  box-shadow: 0 12px 28px rgba(6, 182, 212, 0.22);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.secondaryBtn {
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: #fff;
+  cursor: pointer;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* --- interactions --- */
+.sectionSpacing {
+  margin-top: 22px;
+}
+
+.emptyState {
+  min-height: 180px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  color: rgba(15, 23, 42, 0.55);
+}
+
+.emptyIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.06);
+  display: grid;
+  place-items: center;
+  margin: 0 auto 10px;
+}
+
+.emptyTitle {
+  margin: 0;
+  font-weight: 900;
+  color: rgba(15, 23, 42, 0.75);
+}
+
+.emptySub {
+  margin: 6px 0 0;
+  font-size: 12px;
+}
+
+/* --- delete --- */
+.deleteWrap {
+  margin-top: 18px;
+}
+
+.deleteBtn {
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  border-radius: 12px;
+  color: #fff;
+  font-weight: 900;
+  background: #ef4444;
+  box-shadow: 0 14px 28px rgba(239, 68, 68, 0.25);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
