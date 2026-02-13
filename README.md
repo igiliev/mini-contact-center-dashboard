@@ -26,8 +26,8 @@ Before running the project, make sure you have the following installed:
 # Project Setup Instructions
 
 ### Clone the repository:
-git clone <repo-url>
-cd contact-center
+* git clone <repo-url>
+* cd contact-center
 
 # Backend Setup (Laravel)
 ### Navigate to backend root (project root):
@@ -37,9 +37,9 @@ composer install
 cp .env.example .env
 
 ### Update .env database settings:
-DB_DATABASE=contact_center
-DB_USERNAME=root
-DB_PASSWORD=
+* DB_DATABASE=contact_center
+* DB_USERNAME=root
+* DB_PASSWORD=
 
 ### Create database manually in MySQL:
 contact_center
@@ -51,8 +51,8 @@ php artisan key:generate
 php artisan migrate --seed
 
 ### Install Sanctum tables:
-php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
-php artisan migrate
+* php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
+* php artisan migrate
 
 ### Start backend server:
 php artisan serve
@@ -67,9 +67,9 @@ Email: agent@example.com
 Password: password
 
 # Frontend Setup (React)
-cd frontend
-npm install
-npm run dev
+* cd frontend
+* npm install
+* npm run dev
 
 ### Frontend will run on:
 http://localhost:5173
