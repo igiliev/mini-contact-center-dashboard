@@ -5,7 +5,7 @@ export const http = axios.create({
 });
 
 http.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token"); // ✅ no store import, no circular deps
+  const token = localStorage.getItem("token");
 
   config.headers = config.headers ?? {};
   config.headers.Accept = "application/json";
