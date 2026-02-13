@@ -99,91 +99,93 @@ export default function ContactsPage() {
         {loadingList && <div style={{ padding: 18 }}>Loading...</div>}
         {error && <div style={{ padding: 18, color: "crimson" }}>{error}</div>}
 
-        {list && (
-          <>
-            <table className={styles.table}>
-              <thead className={styles.thead}>
-                <tr>
-                  <th className={styles.th}>Name</th>
-                  <th className={styles.th}>Email</th>
-                  <th className={styles.th}>Phone</th>
-                  <th className={styles.th}>Company</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {list.data.map((c) => (
-                  <tr key={c.id} className={styles.tbodyRow}>
-                    <td className={styles.td}>
-                      <div className={styles.nameCell}>
-                        <div className={styles.avatar}>{initials(c.name)}</div>
-                        <Link to={`/contacts/${c.id}`}>{c.name}</Link>
-                      </div>
-                    </td>
-
-                    <td className={styles.td}>
-                      <div className={styles.emailCell}>
-                        <span className={styles.iconMini} aria-hidden>
-                          {/* mail icon */}
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                            <path
-                              d="M4 4h16v16H4V4Z"
-                              stroke="rgba(6,182,212,0.9)"
-                              strokeWidth="2"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="m4 7 8 6 8-6"
-                              stroke="rgba(6,182,212,0.9)"
-                              strokeWidth="2"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        </span>
-                        <span>{c.email}</span>
-                      </div>
-                    </td>
-
-                    <td className={styles.td}>
-                      {c.phone ? (
-                        <span>{c.phone}</span>
-                      ) : (
-                        <span className={styles.mutedDash}>-</span>
-                      )}
-                    </td>
-
-                    <td className={styles.td}>
-                      {c.company ? <span>{c.company}</span> : <span className={styles.mutedDash}>-</span>}
-                    </td>
+        <div className={styles.tableScroll}>        
+          {list && (
+            <>
+              <table className={styles.table}>
+                <thead className={styles.thead}>
+                  <tr>
+                    <th className={styles.th}>Name</th>
+                    <th className={styles.th}>Email</th>
+                    <th className={styles.th}>Phone</th>
+                    <th className={styles.th}>Company</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
 
-            <div className={styles.footer}>
-              <button
-                className={styles.pagerBtn}
-                disabled={list.current_page <= 1}
-                onClick={() => dispatch(setPage(list.current_page - 1))}
-              >
-                ‹ Prev
-              </button>
+                <tbody>
+                  {list.data.map((c) => (
+                    <tr key={c.id} className={styles.tbodyRow}>
+                      <td className={styles.td}>
+                        <div className={styles.nameCell}>
+                          <div className={styles.avatar}>{initials(c.name)}</div>
+                          <Link to={`/contacts/${c.id}`}>{c.name}</Link>
+                        </div>
+                      </td>
 
-              <div className={styles.pagerInfo}>
-                Page <strong>{list.current_page}</strong> of <strong>{list.last_page}</strong>{" "}
-                <span style={{ opacity: 0.7 }}>(Total: {list.total})</span>
+                      <td className={styles.td}>
+                        <div className={styles.emailCell}>
+                          <span className={styles.iconMini} aria-hidden>
+                            {/* mail icon */}
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                              <path
+                                d="M4 4h16v16H4V4Z"
+                                stroke="rgba(6,182,212,0.9)"
+                                strokeWidth="2"
+                                strokeLinejoin="round"
+                              />
+                              <path
+                                d="m4 7 8 6 8-6"
+                                stroke="rgba(6,182,212,0.9)"
+                                strokeWidth="2"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          </span>
+                          <span>{c.email}</span>
+                        </div>
+                      </td>
+
+                      <td className={styles.td}>
+                        {c.phone ? (
+                          <span>{c.phone}</span>
+                        ) : (
+                          <span className={styles.mutedDash}>-</span>
+                        )}
+                      </td>
+
+                      <td className={styles.td}>
+                        {c.company ? <span>{c.company}</span> : <span className={styles.mutedDash}>-</span>}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              <div className={styles.footer}>
+                <button
+                  className={styles.pagerBtn}
+                  disabled={list.current_page <= 1}
+                  onClick={() => dispatch(setPage(list.current_page - 1))}
+                >
+                  ‹ Prev
+                </button>
+
+                <div className={styles.pagerInfo}>
+                  Page <strong>{list.current_page}</strong> of <strong>{list.last_page}</strong>{" "}
+                  <span style={{ opacity: 0.7 }}>(Total: {list.total})</span>
+                </div>
+
+                <button
+                  className={styles.pagerBtn}
+                  disabled={list.current_page >= list.last_page}
+                  onClick={() => dispatch(setPage(list.current_page + 1))}
+                >
+                  Next ›
+                </button>
               </div>
-
-              <button
-                className={styles.pagerBtn}
-                disabled={list.current_page >= list.last_page}
-                onClick={() => dispatch(setPage(list.current_page + 1))}
-              >
-                Next ›
-              </button>
-            </div>
-          </>
-        )}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
